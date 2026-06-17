@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import axios from "axios";
+import api from "../api/api";
 
 const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/categories" : "https://backend-sistema-seven.vercel.app/api/categories";
 
-axios.defaults.withCredentials = true;
+
 
 export const useCategoryStore = create((set) => ({
   categories: [],
@@ -11,10 +11,11 @@ export const useCategoryStore = create((set) => ({
   isLoading: false,
   error: null,
 
-  fetchCategories: async (page = 1, limit = 100) => {
+  fetchCategories: async (page = 1, limit = 100, query = "") => {
     set({ isLoading: true, error: null });
+    const params = new URLSearchParams({ page, limit, search: query });
     try {
-      const response = await axios.get(`${API_URL}?page=${page}&limit=${limit}`);
+      const response = await api.get(`${API_URL}?${params.toString()}`);
       const payload = response.data;
 
       // El backend devuelve los campos de paginación en el nivel raíz:
@@ -37,7 +38,7 @@ export const useCategoryStore = create((set) => ({
   createCategory: async (categoryData) => {
     set({ isLoading: true, error: null });
     try {
-      const response = await axios.post(API_URL, categoryData);
+      const response = await api.post(`${API_URL}`, categoryData);
       set((state) => ({
         categories: [...state.categories, response.data.category || response.data],
         isLoading: false
@@ -52,7 +53,7 @@ export const useCategoryStore = create((set) => ({
   updateCategory: async (id, categoryData) => {
     set({ isLoading: true, error: null });
     try {
-      const response = await axios.put(`${API_URL}/${id}`, categoryData);
+      const response = await api.put(`${API_URL}/${id}`, categoryData);
       set((state) => ({
         categories: state.categories.map((cat) =>
           cat._id === id ? response.data.category || response.data : cat
@@ -69,7 +70,7 @@ export const useCategoryStore = create((set) => ({
   deleteCategory: async (id) => {
     set({ isLoading: true, error: null });
     try {
-      const response = await axios.delete(`${API_URL}/${id}`);
+      const response = await api.delete(`${API_URL}/${id}`);
       set((state) => ({
         categories: state.categories.filter((cat) => cat._id !== id),
         isLoading: false
