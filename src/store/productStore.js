@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/products" : "https://backend-inventory-system.vercel.app/api/products";
+const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/products" : "https://backend-sistema-seven.vercel.app/api/products";
 
 axios.defaults.withCredentials = true;
 
@@ -26,7 +26,7 @@ export const useProductStore = create((set) => ({
       // El backend devuelve los campos de paginación en el nivel raíz:
       // { success, products, total, totalPages, currentPage }
       const products = payload.products || payload.data || (Array.isArray(payload) ? payload : []);
-      const total      = payload.total      ?? 0;
+      const total = payload.total ?? 0;
       const totalPages = payload.totalPages ?? 1;
       const currentPage = payload.currentPage ?? page;
 
@@ -69,9 +69,9 @@ export const useProductStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axios.post(API_URL, productData);
-      set((state) => ({ 
+      set((state) => ({
         products: [...state.products, response.data.product || response.data],
-        isLoading: false 
+        isLoading: false
       }));
       return response.data;
     } catch (error) {
@@ -85,7 +85,7 @@ export const useProductStore = create((set) => ({
     try {
       const response = await axios.put(`${API_URL}/${id}`, productData);
       set((state) => ({
-        products: state.products.map((prod) => 
+        products: state.products.map((prod) =>
           prod._id === id ? response.data.product || response.data : prod
         ),
         isLoading: false

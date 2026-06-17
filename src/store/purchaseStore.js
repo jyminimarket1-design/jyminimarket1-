@@ -20,8 +20,8 @@ export const usePurchaseStore = create((set) => ({
 
       // El backend devuelve los campos de paginación en el nivel raíz:
       // { success, purchases, total, totalPages, currentPage }
-      const purchases  = payload.purchases || payload.data || (Array.isArray(payload) ? payload : []);
-      const total      = payload.total      ?? 0;
+      const purchases = payload.purchases || payload.data || (Array.isArray(payload) ? payload : []);
+      const total = payload.total ?? 0;
       const totalPages = payload.totalPages ?? 1;
       const currentPage = payload.currentPage ?? page;
 
@@ -49,9 +49,9 @@ export const usePurchaseStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axios.post(API_URL, purchaseData);
-      set((state) => ({ 
+      set((state) => ({
         purchases: [response.data.purchase || response.data, ...state.purchases],
-        isLoading: false 
+        isLoading: false
       }));
       return response.data;
     } catch (error) {
@@ -76,10 +76,10 @@ export const usePurchaseStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axios.put(`${API_URL}/${id}/pay`, paymentData);
-      
+
       // Update the local purchase if found
       set((state) => ({
-        purchases: state.purchases.map(p => 
+        purchases: state.purchases.map(p =>
           p._id === id ? { ...p, ...((response.data.purchase || response.data) || {}) } : p
         ),
         isLoading: false

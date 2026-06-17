@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from "axios";
 
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/rates" : "https://backend-inventory-system.vercel.app/api/rates";
+const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/rates" : "https://backend-sistema-seven.vercel.app/api/rates";
 
 axios.defaults.withCredentials = true;
 
@@ -43,15 +43,15 @@ export const useCurrencyStore = create(
       saveRateToServer: async (rate) => {
         const parsed = parseFloat(rate);
         if (isNaN(parsed) || parsed <= 0) return;
-        
+
         set({ isLoading: true, error: null });
         try {
           const response = await axios.post(API_URL, { rate: parsed });
           if (response.data && response.data.rate) {
-             const rateValue = response.data.rate.rate || response.data.rate;
-             set({ exchangeRate: rateValue, isLoading: false });
+            const rateValue = response.data.rate.rate || response.data.rate;
+            set({ exchangeRate: rateValue, isLoading: false });
           } else {
-             set({ exchangeRate: parsed, isLoading: false });
+            set({ exchangeRate: parsed, isLoading: false });
           }
         } catch (error) {
           set({ error: error.response?.data?.message || "Error al guardar la tasa", isLoading: false });

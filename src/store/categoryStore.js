@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/categories" : "https://backend-inventory-system.vercel.app/api/categories";
+const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/categories" : "https://backend-sistema-seven.vercel.app/api/categories";
 
 axios.defaults.withCredentials = true;
 
@@ -20,7 +20,7 @@ export const useCategoryStore = create((set) => ({
       // El backend devuelve los campos de paginación en el nivel raíz:
       // { success, categories, total, totalPages, currentPage }
       const categories = payload.categories || payload.data || (Array.isArray(payload) ? payload : []);
-      const total      = payload.total      ?? 0;
+      const total = payload.total ?? 0;
       const totalPages = payload.totalPages ?? 1;
       const currentPage = payload.currentPage ?? page;
 
