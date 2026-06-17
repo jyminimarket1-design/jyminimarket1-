@@ -35,11 +35,11 @@ export const useAuthStore = create((set) => ({
 		set({ isLoading: true, error: null });
 		try {
 			await axios.post(`${API_URL}/logout`);
-			
+
 			// Nivel 1: Destrucción de persistencia (Local y Session)
 			localStorage.clear();
 			sessionStorage.clear();
-			
+
 			// Nivel 3: Invalidación del cliente API
 			delete axios.defaults.headers.common['Authorization'];
 
@@ -119,4 +119,4 @@ export const useAuthStore = create((set) => ({
 		}
 	},
 }));
-
+

@@ -266,7 +266,7 @@ const SalesManager = () => {
             </Button>
           )}
         </div>
-            <ExchangeRateBar />
+        <ExchangeRateBar />
       </header>
 
       {/* POS fullscreen */}
@@ -300,10 +300,10 @@ const SalesManager = () => {
 
       {/* Detalle de venta */}
       {viewedSale && !isFormOpen && (
-        <SaleDetailView 
-          sale={viewedSale} 
-          onBack={() => setViewedSale(null)} 
-          toBs={toBs} 
+        <SaleDetailView
+          sale={viewedSale}
+          onBack={() => setViewedSale(null)}
+          toBs={toBs}
           userRole={user?.role}
           onCancel={() => handleCancelSale(viewedSale._id)}
           onEdit={() => setIsEditModalOpen(true)}
@@ -417,7 +417,7 @@ const SalesManager = () => {
                     <option value="all">Todos los pagos</option>
                     <option value="Efectivo">Efectivo</option>
                     <option value="Divisas">Divisas</option>
-                    <option value="Punto de Venta">Punto de Venta</option>
+                    <option value="BioPago">BioPago</option>
                     <option value="Tarjeta">Tarjeta</option>
                     <option value="Pago Movil">Pago Móvil</option>
                     <option value="Transferencia">Transferencia</option>
